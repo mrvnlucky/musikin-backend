@@ -9,8 +9,6 @@ dotenv.config()
 
 // import routes
 // --imports go here
-require("./src/routes/userRoute")(app)
-require("./src/routes/testRoute")(app)
 
 app.use(cors({
   credentials: true,
