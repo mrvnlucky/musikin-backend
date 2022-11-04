@@ -9,21 +9,11 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      gigId: {
+      gig_id: {
         type: Sequelize.INTEGER,
-        allowNull: false,
-        references: {
-          model: 'Gigs',
-          key: 'id'
-        }
       },
-      userId: {
+      user_id: {
         type: Sequelize.INTEGER,
-        allowNull: false,
-        references: {
-          model: 'Users',
-          key: 'id'
-        }
       },
       performer_name: {
         type: Sequelize.STRING

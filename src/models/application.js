@@ -11,13 +11,19 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      Application.belongsTo(models.User, { foreignKey: 'userId', as: 'user' })
-      Application.belongsTo(models.Gig, { foreignKey: 'gigId', as: 'gig' })
+      Application.belongsTo(models.User, {
+        foreignKey: 'user_id',
+        as: 'user'
+      })
+      Application.belongsTo(models.Gig, {
+        foreignKey: 'gig_id',
+        as: 'gig'
+      })
     }
   }
   Application.init({
-    gigId: DataTypes.INTEGER,
-    userId: DataTypes.INTEGER,
+    gig_id: DataTypes.INTEGER,
+    user_id: DataTypes.INTEGER,
     performer_name: DataTypes.STRING,
     portofolio_link: DataTypes.STRING,
     status: DataTypes.STRING

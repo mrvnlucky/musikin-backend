@@ -4,11 +4,8 @@ const cors = require("cors")
 const db = require('./src/models')
 
 const dotenv = require("dotenv")
+const router = require("./src/routes/index")
 dotenv.config()
-
-
-// import routes
-// --imports go here
 
 app.use(cors({
   credentials: true,
@@ -24,8 +21,7 @@ db.sequelize.sync()
     console.log('Failed to sync db: ' + error.message);
   })
 
-// initialize routes
-// --routes go here
+app.use('/', router)
 
 const appStart = () => {
   try {

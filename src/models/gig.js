@@ -11,14 +11,21 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      Gig.belongsTo(models.Owner, { foreignKey: 'ownerId', as: 'owner' })
-      Gig.hasMany(models.Application, { as: 'applications' })
+      Gig.belongsTo(models.Owner, {
+        foreignKey: 'owner_id',
+        as: 'owner'
+      })
+      Gig.hasMany(models.Application, {
+        foreignKey: 'gig_id',
+        as: 'applications'
+      })
     }
   }
   Gig.init({
-    ownerId: DataTypes.INTEGER,
+    owner_id: DataTypes.INTEGER,
     location: DataTypes.STRING,
     fee: DataTypes.INTEGER,
+    title: DataTypes.STRING,
     description: DataTypes.TEXT,
     location_photo: DataTypes.STRING
   }, {

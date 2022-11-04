@@ -9,19 +9,17 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      ownerId: {
-        type: Sequelize.INTEGER,
-        allowNull: false,
-        references: {
-          model: 'Owners',
-          key: 'id'
-        }
+      owner_id: {
+        type: Sequelize.INTEGER
       },
       location: {
         type: Sequelize.STRING
       },
       fee: {
         type: Sequelize.INTEGER
+      },
+      title: {
+        type: Sequelize.STRING
       },
       description: {
         type: Sequelize.TEXT
