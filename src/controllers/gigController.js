@@ -56,7 +56,7 @@ exports.getAllGigs = async (req, res) => {
   try {
     let gigs = await Gig.findAll()
     res.status(200).send({
-      succes: true,
+      success: true,
       gigs
     })
   } catch (err) {

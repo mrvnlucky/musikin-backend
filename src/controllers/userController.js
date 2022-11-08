@@ -95,3 +95,64 @@ exports.signupUser = async (req, res) => {
     res.status(400).json({ error: error.message })
   }
 }
+
+exports.getAllUsers = async (req, res) => {
+  try {
+    let users = await User.findAll()
+    res.status(200).send({
+      success: true, users
+    })
+  } catch (err) {
+    res.status(500).send({
+      message: err.messagee || "Some error occured while geeting users"
+    })
+  }
+}
+
+exports.getOneUser = async (req, res) => {
+  try {
+    let id = req.params.id
+    let user = await User.findOne({ where: { id: id } })
+    res.status(200).send({
+      success: true,
+      user
+    })
+  } catch (err) {
+    res.status(500).send({
+      message: err.message || "Some error occured while getting user"
+    })
+  }
+}
+
+exports.updateUser = async (req, res) => {
+  try {
+    let id = req.params.id
+    const user = await User.update(req.body, { where: { id: id } })
+    const updatedUser = await User.findOne({ where: { id: id } })
+    res.status(200).send({
+      succes: true,
+      updatedUser
+    })
+  } catch (err) {
+    res.status(500).send({
+      message: err.message || "Some error occured while updating user"
+    })
+  }
+}
+
+exports.deleteUser = async (req, res) => {
+  try {
+    let id = req.params.id
+    const deletedUser = await User.findOne({ where: { id: id } })
+    await User.destroy({ where: { id: id } })
+    res.status(200).send({
+      success: true,
+      message: "User is deleted",
+      deletedUser
+    })
+  } catch (err) {
+    res.status(500).send({
+      message: err.message || "Some error occured while deleting user"
+    })
+  }
+}

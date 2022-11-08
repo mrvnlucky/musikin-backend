@@ -11,7 +11,7 @@ const createToken = (id) => {
     { expiresIn: "1d" })
 }
 
-exports.loginUser = async (req, res) => {
+exports.loginOwner = async (req, res) => {
   const { email, password } = req.body
 
   try {
@@ -55,16 +55,16 @@ exports.loginUser = async (req, res) => {
   }
 }
 
-exports.signupUser = async (req, res) => {
+exports.signupOwner = async (req, res) => {
   const { email, name, password, phone } = req.body
 
   try {
     if (!email || !password || !name || !phone) {
       res.status(400).send("All fields must be filled")
     }
-    const oldUser = await Owner.findOne({ where: { owner_email: email } })
+    const oldOwner = await Owner.findOne({ where: { owner_email: email } })
 
-    if (oldUser) {
+    if (oldOwner) {
       res.status(400).send("Email is already in use")
     }
 
@@ -96,5 +96,66 @@ exports.signupUser = async (req, res) => {
 
   } catch (error) {
     res.status(400).json({ error: error.message })
+  }
+}
+
+exports.getAllOwners = async (req, res) => {
+  try {
+    let owners = await Owner.findAll()
+    res.status(200).send({
+      success: true, owners
+    })
+  } catch (err) {
+    res.status(500).send({
+      message: err.messagee || "Some error occured while geeting owners"
+    })
+  }
+}
+
+exports.getOneOwner = async (req, res) => {
+  try {
+    let id = req.params.id
+    let owner = await Owner.findOne({ where: { id: id } })
+    res.status(200).send({
+      success: true,
+      owner
+    })
+  } catch (err) {
+    res.status(500).send({
+      message: err.message || "Some error occured while getting owner"
+    })
+  }
+}
+
+exports.updateOwner = async (req, res) => {
+  try {
+    let id = req.params.id
+    const owner = await Owner.update(req.body, { where: { id: id } })
+    const updatedOwner = await Owner.findOne({ where: { id: id } })
+    res.status(200).send({
+      succes: true,
+      updatedOwner
+    })
+  } catch (err) {
+    res.status(500).send({
+      message: err.message || "Some error occured while updating owner"
+    })
+  }
+}
+
+exports.deleteOwner = async (req, res) => {
+  try {
+    let id = req.params.id
+    const deletedOwner = await Owner.findOne({ where: { id: id } })
+    await Owner.destroy({ where: { id: id } })
+    res.status(200).send({
+      success: true,
+      message: "Owner is deleted",
+      deletedOwner
+    })
+  } catch (err) {
+    res.status(500).send({
+      message: err.message || "Some error occured while deleting owner"
+    })
   }
 }
