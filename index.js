@@ -1,24 +1,32 @@
 const express = require("express")
 const app = express()
 const cors = require("cors")
-const { PORT, SERVER_URL, CLIENT_URL } = require('./constants')
+const db = require('./src/models')
 
-// import routes
-// --imports go here
+const dotenv = require("dotenv")
+const router = require("./src/routes/index")
+dotenv.config()
 
 app.use(cors({
   credentials: true,
-  origin: CLIENT_URL
+  origin: process.env.CLIENT_URL
 }))
 app.use(express.json())
 
-// initialize routes
-// --routes go here
+db.sequelize.sync()
+  .then(() => {
+    console.log('Synced db.');
+  })
+  .catch((error) => {
+    console.log('Failed to sync db: ' + error.message);
+  })
+
+app.use('/', router)
 
 const appStart = () => {
   try {
-    app.listen(PORT, () => {
-      console.log(`Server running at ${SERVER_URL}`);
+    app.listen(process.env.PORT, () => {
+      console.log('Server running at', process.env.SERVER_URL);
     })
   } catch (error) {
     console.log(`Error: ${error.message}`);
