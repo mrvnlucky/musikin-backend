@@ -1,10 +1,10 @@
 const express = require("express")
 const app = express()
 const cors = require("cors")
-const db = require('./src/models')
+const db = require('./models')
 
 const dotenv = require("dotenv")
-const router = require("./src/routes/index")
+const router = require("./routes/index")
 dotenv.config()
 
 app.use(cors({
