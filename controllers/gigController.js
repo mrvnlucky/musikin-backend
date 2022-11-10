@@ -25,6 +25,7 @@ exports.addGig = async (req, res) => {
   try {
     if (!req.body.title) {
       res.status(400).send({ message: "Masukkan judul gig" })
+      return
     }
 
     let data = {

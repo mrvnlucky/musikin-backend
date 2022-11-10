@@ -17,6 +17,7 @@ exports.loginOwner = async (req, res) => {
   try {
     if (!email || !password) {
       res.status(400).send("All fields must be filled")
+      return
     }
 
     // if (!validator.isEmail(email)) {
@@ -27,11 +28,13 @@ exports.loginOwner = async (req, res) => {
     const owner = await Owner.findOne({ where: { owner_email: email } })
     if (!owner) {
       res.status(401).send('Owner not found')
+      return
     }
 
     const match = await bcrypt.compare(password, owner.owner_password)
     if (!match) {
       res.status(401).send("Incorrect password!")
+      return
     }
 
 
@@ -61,11 +64,13 @@ exports.signupOwner = async (req, res) => {
   try {
     if (!email || !password || !name || !phone) {
       res.status(400).send("All fields must be filled")
+      return
     }
     const oldOwner = await Owner.findOne({ where: { owner_email: email } })
 
     if (oldOwner) {
       res.status(400).send("Email is already in use")
+      return
     }
 
     const salt = await bcrypt.genSalt(10)

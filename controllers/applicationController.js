@@ -25,6 +25,7 @@ exports.addApplication = async (req, res) => {
   try {
     if (!req.body.performer_name) {
       res.status(400).send({ message: "Masukkan nama panggung" })
+      return
     }
 
     let data = {

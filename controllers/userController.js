@@ -17,6 +17,7 @@ exports.loginUser = async (req, res) => {
   try {
     if (!email || !password) {
       res.status(400).send("All fields must be filled")
+      return
     }
 
     // if (!validator.isEmail(email)) {
@@ -27,11 +28,13 @@ exports.loginUser = async (req, res) => {
     const user = await User.findOne({ where: { user_email: email } })
     if (!user) {
       res.status(401).send('User not found')
+      return
     }
 
     const match = await bcrypt.compare(password, user.user_password)
     if (!match) {
       res.status(401).send("Incorrect password!")
+      return
     }
 
     const token = createToken(user.id)
@@ -59,11 +62,13 @@ exports.signupUser = async (req, res) => {
   try {
     if (!email || !password || !name || !phone) {
       res.status(400).send("All fields must be filled")
+      return
     }
     const oldUser = await User.findOne({ where: { user_email: email } })
 
     if (oldUser) {
       res.status(400).send("Email is already in use")
+      return
     }
 
     const salt = await bcrypt.genSalt(10)

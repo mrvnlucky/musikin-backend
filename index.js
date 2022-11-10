@@ -8,8 +8,8 @@ const router = require("./routes/index")
 dotenv.config()
 
 app.use(cors({
-  credentials: true,
-  origin: 'http://localhost:3000'
+  origin: ['http://localhost:3000'],
+  credentials: true
 }))
 app.use(express.json())
 
