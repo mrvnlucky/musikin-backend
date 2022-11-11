@@ -108,9 +108,22 @@ exports.signupOwner = async (req, res) => {
 
 exports.getAllOwners = async (req, res) => {
   try {
-    let owners = await Owner.findAll()
+    // let owners = await Owner.findAll()
+    // res.status(200).send({
+    //   success: true, owners
+    // })
+    const limit = req.query.size || 10
+    const offset = req.query.page || 0
+
+    const owners = await Owner.findAndCountAll({
+      limit: limit,
+      offset: offset,
+      attributes: ['id', 'owner_email', 'owner_phone', 'owner_photo', 'createdAt', 'updatedAt']
+    })
     res.status(200).send({
-      success: true, owners
+      success: true,
+      owners,
+      totalPages: Math.ceil(owners.count / Number.parseInt(limit))
     })
   } catch (err) {
     res.status(500).send({
