@@ -40,6 +40,7 @@ exports.loginUser = async (req, res) => {
     const token = createToken(user.id)
 
     const data = {
+      id: user.id,
       email: user.user_email,
       name: user.user_name,
       phone: user.user_phone,
@@ -84,6 +85,7 @@ exports.signupUser = async (req, res) => {
     const token = createToken(user.id)
 
     const data = {
+      id: user.id,
       email: user.user_email,
       name: user.user_name,
       phone: user.user_phone,

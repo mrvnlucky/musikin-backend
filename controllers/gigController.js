@@ -22,22 +22,32 @@ exports.addGig = async (req, res) => {
   //     })
   //   })
 
+  const { owner_id, location, fee, title, description, location_photo } = req.body
+
   try {
     if (!req.body.title) {
       res.status(400).send({ message: "Masukkan judul gig" })
       return
     }
 
-    let data = {
-      owner_id: req.body.owner_id,
-      location: req.body.location,
-      fee: req.body.fee,
-      title: req.body.title,
-      description: req.body.description,
-      location_photo: req.body.location_photo
-    }
+    const gig = await Gig.create({
+      owner_id: owner_id,
+      location: location,
+      fee: fee,
+      title: title,
+      description: description,
+      location_photo: location_photo
+    })
 
-    const gig = await Gig.create(data)
+    let data = {
+      id: gig.id,
+      owner_id: gig.owner_id,
+      location: gig.location,
+      fee: gig.fee,
+      title: gig.title,
+      description: gig.description,
+      location_photo: gig.location_photo
+    }
     res.status(200).send({
       success: true,
       message: "Gig created",
