@@ -41,6 +41,7 @@ exports.loginOwner = async (req, res) => {
     const token = createToken(owner.id)
 
     const data = {
+      id: owner.id,
       email: owner.owner_email,
       name: owner.owner_name,
       phone: owner.owner_phone,
@@ -85,6 +86,7 @@ exports.signupOwner = async (req, res) => {
 
     const token = createToken(owner.id)
     const data = {
+      id: owner.id,
       email: owner.owner_email,
       name: owner.owner_name,
       phone: owner.owner_phone,

@@ -22,21 +22,30 @@ exports.addApplication = async (req, res) => {
   //     })
   //   })
 
+  const { gig_id, user_id, performer_name, portofolio_link, status } = req.body
+
   try {
     if (!req.body.performer_name) {
       res.status(400).send({ message: "Masukkan nama panggung" })
       return
     }
 
-    let data = {
-      gig_id: req.body.gig_id,
-      user_id: req.body.user_id,
-      performer_name: req.body.performer_name,
-      portofolio_link: req.body.portofolio_link,
-      status: req.body.status
-    }
 
-    const application = await Application.create(data)
+    const application = await Application.create({
+      gig_id: gig_id,
+      user_id: user_id,
+      performer_name: performer_name,
+      portofolio_link: portofolio_link,
+      status: status
+    })
+    let data = {
+      id: application.id,
+      gig_id: application.gig_id,
+      user_id: application.user_id,
+      performer_name: application.performer_name,
+      portofolio_link: application.portofolio_link,
+      status: application.status
+    }
     res.status(200).send({
       success: true,
       message: "Application created",
