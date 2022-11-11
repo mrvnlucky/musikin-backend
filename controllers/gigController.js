@@ -37,6 +37,8 @@ exports.addGig = async (req, res) => {
       location_photo: req.body.location_photo
     }
 
+
+
     const gig = await Gig.create(data)
     res.status(200).send({
       success: true,
