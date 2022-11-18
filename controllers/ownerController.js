@@ -1,7 +1,7 @@
 const Owner = require('../models').Owner
 const jwt = require('jsonwebtoken')
 const bcrypt = require('bcryptjs')
-
+const cloudinary = require('../utils/cloudinary')
 
 const createToken = (id) => {
   const payload = { id }
@@ -149,8 +149,20 @@ exports.getOneOwner = async (req, res) => {
 
 exports.updateOwner = async (req, res) => {
   try {
+    const { owner_name, owner_email, owner_password, owner_phone, } = req.body
     let id = req.params.id
-    const owner = await Owner.update(req.body, { where: { id: id } })
+
+    const img = await cloudinary.uploader.upload(req.file.path, {
+      folder: "musikin/owner/"
+    })
+
+    const owner = await Owner.update({
+      owner_name: owner_name,
+      owner_email: owner_email,
+      owner_password: owner_password,
+      owner_phone: owner_phone,
+      owner_photo: img.secure_url
+    }, { where: { id: id } })
     const updatedOwner = await Owner.findOne({ where: { id: id } })
     res.status(200).send({
       succes: true,
@@ -163,6 +175,7 @@ exports.updateOwner = async (req, res) => {
   }
 }
 
+// FIX: image for deleted item is not deleted from cloudinary storage
 exports.deleteOwner = async (req, res) => {
   try {
     let id = req.params.id

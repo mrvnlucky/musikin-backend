@@ -1,6 +1,7 @@
 const User = require('../models').User
 const jwt = require('jsonwebtoken')
 const bcrypt = require('bcryptjs')
+const cloudinary = require('../utils/cloudinary')
 
 
 const createToken = (id) => {
@@ -147,8 +148,25 @@ exports.getOneUser = async (req, res) => {
 
 exports.updateUser = async (req, res) => {
   try {
+    const { user_name, user_email, user_password, user_phone } = req.body
     let id = req.params.id
-    const user = await User.update(req.body, { where: { id: id } })
+
+    const img = await cloudinary.uploader.upload(req.file.path, {
+      folder: "musikin/user/"
+    })
+
+    const user = await User.update({
+      user_name: user_name,
+      user_email: user_email,
+      user_password: user_password,
+      user_phone: user_phone,
+      user_photo: img.secure_url
+    }, {
+      where: {
+        id: id
+      }
+    })
+
     const updatedUser = await User.findOne({ where: { id: id } })
     res.status(200).send({
       succes: true,
@@ -161,6 +179,7 @@ exports.updateUser = async (req, res) => {
   }
 }
 
+// FIX: image for deleted item is not deleted from cloudinary storage
 exports.deleteUser = async (req, res) => {
   try {
     let id = req.params.id

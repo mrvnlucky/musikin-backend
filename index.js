@@ -12,15 +12,15 @@ app.use(cors({
   credentials: true
 }))
 app.use(express.json())
+// app.use(express.urlencoded())
 
-db.sequelize.sync()
-  .then(() => {
-    console.log('Synced db.');
-  })
-  .catch((error) => {
-    console.log('Failed to sync db: ' + error.message);
-  })
-
+// db.sequelize.sync()
+//   .then(() => {
+//     console.log('Synced db.');
+//   })
+//   .catch((error) => {
+//     console.log('Failed to sync db: ' + error.message);
+//   })
 app.use('/', router)
 
 const appStart = () => {
