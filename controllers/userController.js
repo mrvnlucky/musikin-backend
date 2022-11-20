@@ -117,7 +117,7 @@ exports.getAllUsers = async (req, res) => {
     const users = await User.findAndCountAll({
       limit: limit,
       offset: offset,
-      attributes: ['id', 'user_email', 'user_phone', 'user_photo', 'createdAt', 'updatedAt']
+      attributes: ['id', 'user_email', 'user_name', 'user_phone', 'user_photo', 'createdAt', 'updatedAt']
     })
     res.status(200).send({
       success: true,
@@ -151,21 +151,38 @@ exports.updateUser = async (req, res) => {
     const { user_name, user_email, user_password, user_phone } = req.body
     let id = req.params.id
 
-    const img = await cloudinary.uploader.upload(req.file.path, {
-      folder: "musikin/user/"
-    })
+    if (req.file) {
+      const img = await cloudinary.uploader.upload(req.file.path, {
+        folder: "musikin/user/"
+      })
+      const salt = await bcrypt.genSalt(10)
+      const hash = await bcrypt.hash(user_password, salt)
+      const user = await User.update({
+        user_name: user_name,
+        user_email: user_email,
+        user_password: hash,
+        user_phone: user_phone,
+        user_photo: img.secure_url
+      }, {
+        where: {
+          id: id
+        }
+      })
+    } else {
+      const salt = await bcrypt.genSalt(10)
+      const hash = await bcrypt.hash(user_password, salt)
+      const user = await User.update({
+        user_name: user_name,
+        user_email: user_email,
+        user_password: hash,
+        user_phone: user_phone
+      }, {
+        where: {
+          id: id
+        }
+      })
+    }
 
-    const user = await User.update({
-      user_name: user_name,
-      user_email: user_email,
-      user_password: user_password,
-      user_phone: user_phone,
-      user_photo: img.secure_url
-    }, {
-      where: {
-        id: id
-      }
-    })
 
     const updatedUser = await User.findOne({ where: { id: id } })
     res.status(200).send({
@@ -193,6 +210,33 @@ exports.deleteUser = async (req, res) => {
   } catch (err) {
     res.status(500).send({
       message: err.message || "Some error occured while deleting user"
+    })
+  }
+}
+
+exports.updateUserPassword = async (req, res) => {
+  try {
+    const { password, verifyPassword } = req.body
+    let id = req.params.id
+
+    if (password !== verifyPassword) {
+      res.status(400).send("Please verify the password")
+      return
+    }
+    const salt = await bcrypt.genSalt(10)
+    const hash = await bcrypt.hash(password, salt)
+    await User.update({
+      user_password: hash
+    }, { where: { id: id } })
+
+    const updatedUser = await User.findOne({ where: { id: id } })
+    res.status(200).send({
+      succes: true,
+      updatedUser
+    })
+  } catch (err) {
+    res.status(500).send({
+      message: err.message || "Some error occured while updating owner password"
     })
   }
 }

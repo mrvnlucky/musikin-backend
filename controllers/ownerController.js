@@ -147,22 +147,30 @@ exports.getOneOwner = async (req, res) => {
   }
 }
 
+// Update without password
 exports.updateOwner = async (req, res) => {
   try {
-    const { owner_name, owner_email, owner_password, owner_phone, } = req.body
+    const { owner_name, owner_email, owner_phone } = req.body
     let id = req.params.id
 
-    const img = await cloudinary.uploader.upload(req.file.path, {
-      folder: "musikin/owner/"
-    })
+    if (req.file) {
+      const img = await cloudinary.uploader.upload(req.file.path, {
+        folder: "musikin/owner/"
+      })
 
-    const owner = await Owner.update({
-      owner_name: owner_name,
-      owner_email: owner_email,
-      owner_password: owner_password,
-      owner_phone: owner_phone,
-      owner_photo: img.secure_url
-    }, { where: { id: id } })
+      const owner = await Owner.update({
+        owner_name: owner_name,
+        owner_email: owner_email,
+        owner_phone: owner_phone,
+        owner_photo: img.secure_url
+      }, { where: { id: id } })
+    } else {
+      const owner = await Owner.update({
+        owner_name: owner_name,
+        owner_email: owner_email,
+        owner_phone: owner_phone,
+      }, { where: { id: id } })
+    }
     const updatedOwner = await Owner.findOne({ where: { id: id } })
     res.status(200).send({
       succes: true,
@@ -189,6 +197,33 @@ exports.deleteOwner = async (req, res) => {
   } catch (err) {
     res.status(500).send({
       message: err.message || "Some error occured while deleting owner"
+    })
+  }
+}
+
+exports.updateOwnerPassword = async (req, res) => {
+  try {
+    const { password, verifyPassword } = req.body
+    let id = req.params.id
+
+    if (password !== verifyPassword) {
+      res.status(400).send("Please verify the password")
+      return
+    }
+    const salt = await bcrypt.genSalt(10)
+    const hash = await bcrypt.hash(password, salt)
+    await Owner.update({
+      owner_password: hash
+    }, { where: { id: id } })
+
+    const updatedOwner = await Owner.findOne({ where: { id: id } })
+    res.status(200).send({
+      succes: true,
+      updatedOwner
+    })
+  } catch (err) {
+    res.status(500).send({
+      message: err.message || "Some error occured while updating owner password"
     })
   }
 }

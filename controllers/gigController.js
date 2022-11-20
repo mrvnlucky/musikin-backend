@@ -105,22 +105,36 @@ exports.updateGig = async (req, res) => {
     const { owner_id, location, fee, title, description } = req.body
     let id = req.params.id
 
-    const img = await cloudinary.uploader.upload(req.file.path, {
-      folder: "musikin/gig/"
-    })
+    if (req.file) {
+      const img = await cloudinary.uploader.upload(req.file.path, {
+        folder: "musikin/gig/"
+      })
 
-    const gig = await Gig.update({
-      owner_id: owner_id,
-      location: location,
-      fee: fee,
-      title: title,
-      description: description,
-      location_photo: img.secure_url
-    }, {
-      where: {
-        id: id
-      }
-    })
+      const gig = await Gig.update({
+        owner_id: owner_id,
+        location: location,
+        fee: fee,
+        title: title,
+        description: description,
+        location_photo: img.secure_url
+      }, {
+        where: {
+          id: id
+        }
+      })
+    } else {
+      const gig = await Gig.update({
+        owner_id: owner_id,
+        location: location,
+        fee: fee,
+        title: title,
+        description: description
+      }, {
+        where: {
+          id: id
+        }
+      })
+    }
 
     const updatedGig = await Gig.findOne({ where: { id: id } })
     res.status(200).send({
