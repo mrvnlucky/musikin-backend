@@ -1,4 +1,5 @@
 const Application = require('../models').Application
+const User = require('../models').User
 
 exports.addApplication = async (req, res) => {
   // if (!req.body.title) {
@@ -31,6 +32,7 @@ exports.addApplication = async (req, res) => {
     }
 
 
+
     const application = await Application.create({
       gig_id: gig_id,
       user_id: user_id,
@@ -38,10 +40,12 @@ exports.addApplication = async (req, res) => {
       portofolio_link: portofolio_link,
       status: status
     })
+    const user_img = await User.findOne({ where: { id: application.user_id }, attributes: ['user_photo'] })
     let data = {
       id: application.id,
       gig_id: application.gig_id,
       user_id: application.user_id,
+      user_photo: user_img.user_photo,
       performer_name: application.performer_name,
       portofolio_link: application.portofolio_link,
       status: application.status
