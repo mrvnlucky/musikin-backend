@@ -165,3 +165,5 @@ exports.deleteGig = async (req, res) => {
     })
   }
 }
+
+
