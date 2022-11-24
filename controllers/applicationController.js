@@ -71,7 +71,7 @@ exports.getAllApplications = async (req, res) => {
     let gigs = await Application.findAll({
       include: [{
         association: "user",
-        attributes: ['user_photo, user_phone']
+        attributes: ['user_photo', 'user_phone']
       }]
     })
     res.status(200).send({
@@ -92,7 +92,7 @@ exports.getOneApplication = async (req, res) => {
       where: { id: id },
       include: [{
         association: 'user',
-        attributes: ['user_photo, user_phone']
+        attributes: ['user_photo', 'user_phone']
       }]
     })
     res.status(200).send({
