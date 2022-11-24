@@ -148,19 +148,17 @@ exports.getOneUser = async (req, res) => {
 
 exports.updateUser = async (req, res) => {
   try {
-    const { user_name, user_email, user_password, user_phone } = req.body
+    const { user_name, user_email, user_phone } = req.body
     let id = req.params.id
 
     if (req.file) {
       const img = await cloudinary.uploader.upload(req.file.path, {
         folder: "musikin/user/"
       })
-      const salt = await bcrypt.genSalt(10)
-      const hash = await bcrypt.hash(user_password, salt)
+
       const user = await User.update({
         user_name: user_name,
         user_email: user_email,
-        user_password: hash,
         user_phone: user_phone,
         user_photo: img.secure_url
       }, {
@@ -169,12 +167,9 @@ exports.updateUser = async (req, res) => {
         }
       })
     } else {
-      const salt = await bcrypt.genSalt(10)
-      const hash = await bcrypt.hash(user_password, salt)
       const user = await User.update({
         user_name: user_name,
         user_email: user_email,
-        user_password: hash,
         user_phone: user_phone
       }, {
         where: {

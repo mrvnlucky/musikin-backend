@@ -10,5 +10,6 @@ router.get('/:id', ownerController.getOneOwner)
 router.put('/:id', upload.single('owner_photo'), ownerController.updateOwner)
 router.delete('/:id', ownerController.deleteOwner)
 router.put('/:id/changepassword', ownerAuth, ownerController.updateOwnerPassword)
+router.get('/:id/gigs', ownerAuth, ownerController.getMyGigs)
 
 module.exports = router

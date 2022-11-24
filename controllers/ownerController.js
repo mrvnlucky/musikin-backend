@@ -1,7 +1,9 @@
 const Owner = require('../models').Owner
+const Gig = require('../models').Gig
 const jwt = require('jsonwebtoken')
 const bcrypt = require('bcryptjs')
 const cloudinary = require('../utils/cloudinary')
+
 
 const createToken = (id) => {
   const payload = { id }
@@ -224,6 +226,21 @@ exports.updateOwnerPassword = async (req, res) => {
   } catch (err) {
     res.status(500).send({
       message: err.message || "Some error occured while updating owner password"
+    })
+  }
+}
+
+exports.getMyGigs = async (req, res) => {
+  try {
+    let id = req.params.id
+    let gig = await Gig.findAll({ where: { owner_id: id } })
+    res.status(200).send({
+      success: true,
+      gig
+    })
+  } catch (err) {
+    res.status(500).send({
+      message: err.message || "Some error occured while getting your gigs"
     })
   }
 }
