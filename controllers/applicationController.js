@@ -67,9 +67,14 @@ exports.addApplication = async (req, res) => {
 
 exports.getAllApplications = async (req, res) => {
   try {
-    let gigs = await Application.findAll()
+    let gigs = await Application.findAll({
+      include: [{
+        association: "user",
+        attributes: ['user_photo']
+      }]
+    })
     res.status(200).send({
-      succes: true,
+      success: true,
       gigs
     })
   } catch (err) {
@@ -82,7 +87,13 @@ exports.getAllApplications = async (req, res) => {
 exports.getOneApplication = async (req, res) => {
   try {
     let id = req.params.id
-    let application = await Application.findOne({ where: { id: id } })
+    let application = await Application.findOne({
+      where: { id: id },
+      include: [{
+        association: 'user',
+        attributes: ['user_photo']
+      }]
+    })
     res.status(200).send({
       success: true,
       application
