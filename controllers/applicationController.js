@@ -40,12 +40,13 @@ exports.addApplication = async (req, res) => {
       portofolio_link: portofolio_link,
       status: status
     })
-    const user_img = await User.findOne({ where: { id: application.user_id }, attributes: ['user_photo'] })
+    const user = await User.findOne({ where: { id: application.user_id }, attributes: ['user_photo, user_phone'] })
     let data = {
       id: application.id,
       gig_id: application.gig_id,
       user_id: application.user_id,
-      user_photo: user_img.user_photo,
+      user_photo: user.user_photo,
+      user_phone: user.user_phone,
       performer_name: application.performer_name,
       portofolio_link: application.portofolio_link,
       status: application.status
@@ -70,7 +71,7 @@ exports.getAllApplications = async (req, res) => {
     let gigs = await Application.findAll({
       include: [{
         association: "user",
-        attributes: ['user_photo']
+        attributes: ['user_photo, user_phone']
       }]
     })
     res.status(200).send({
@@ -91,7 +92,7 @@ exports.getOneApplication = async (req, res) => {
       where: { id: id },
       include: [{
         association: 'user',
-        attributes: ['user_photo']
+        attributes: ['user_photo, user_phone']
       }]
     })
     res.status(200).send({
