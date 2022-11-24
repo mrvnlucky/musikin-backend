@@ -40,7 +40,7 @@ exports.addApplication = async (req, res) => {
       portofolio_link: portofolio_link,
       status: status
     })
-    const user = await User.findOne({ where: { id: application.user_id }, attributes: ['user_photo, user_phone'] })
+    const user = await User.findOne({ where: { id: application.user_id }, attributes: ['user_photo', 'user_phone'] })
     let data = {
       id: application.id,
       gig_id: application.gig_id,
