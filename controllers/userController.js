@@ -1,4 +1,5 @@
 const User = require('../models').User
+const Application = require('../models').Application
 const jwt = require('jsonwebtoken')
 const bcrypt = require('bcryptjs')
 const cloudinary = require('../utils/cloudinary')
@@ -232,6 +233,21 @@ exports.updateUserPassword = async (req, res) => {
   } catch (err) {
     res.status(500).send({
       message: err.message || "Some error occured while updating owner password"
+    })
+  }
+}
+
+exports.getMyApplications = async (req, res) => {
+  try {
+    let id = req.params.id
+    let application = await Application.findAll({ where: { user_id: id } })
+    res.status(200).send({
+      success: true,
+      application
+    })
+  } catch (err) {
+    res.status(500).send({
+      message: err.message || "Some error occured while getting your gigs"
     })
   }
 }

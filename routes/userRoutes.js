@@ -10,6 +10,6 @@ router.get('/:id', userController.getOneUser)
 router.put('/:id', upload.single('user_photo'), userController.updateUser)
 router.delete('/:id', userController.deleteUser)
 router.put('/:id/changepassword', userAuth, userController.updateUserPassword)
-
+router.get('/:id/applications', userAuth, userController.getMyApplications)
 
 module.exports = router

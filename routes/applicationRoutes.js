@@ -9,5 +9,7 @@ router.get('/', applicationController.getAllApplications)
 router.get('/:id', applicationController.getOneApplication)
 router.put('/:id', auth.userAuth, applicationController.updateApplication)
 router.delete('/:id', auth.userAuth, applicationController.deleteApplication)
+router.put('/:id/status', auth.ownerAuth, applicationController.updateApplicationStatus)
+
 
 module.exports = router

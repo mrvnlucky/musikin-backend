@@ -138,3 +138,32 @@ exports.deleteApplication = async (req, res) => {
     })
   }
 }
+
+
+exports.updateApplicationStatus = async (req, res) => {
+  try {
+    const { status } = req.body
+    let id = req.params.id
+
+    if (status === "accepted" || status === "rejected") {
+      await Application.update({ status: status }, { where: { id: id } })
+
+      const updatedApplication = await Application.findOne({ where: { id: id } })
+      res.status(200).send({
+        success: true,
+        updatedApplication
+      })
+    } else {
+      res.status(500).send({
+        message: "Invalid status sent"
+      })
+      return
+    }
+
+
+  } catch (err) {
+    res.status(500).send({
+      message: err.message || "Some error occured while updating application status"
+    })
+  }
+}
