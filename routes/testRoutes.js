@@ -1,15 +1,12 @@
 const express = require("express");
 const auth = require("../middleware/auth.js")
 
-const protectedController = require('../controllers/protectedController')
 const router = express.Router();
 
-router.get(
-  "/user", auth.userAuth, protectedController.testUser
-);
-router.get(
-  "/owner", auth.ownerAuth, protectedController.testOwner
-);
-router.get("/", res.send("hello world"))
+router.get("/", async (req, res) => {
+  res.status(200).send("hello world")
 
+}
+
+)
 module.exports = router;
