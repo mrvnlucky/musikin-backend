@@ -10,6 +10,6 @@ router.get('/:id', applicationController.getOneApplication)
 router.put('/:id', auth.userAuth, applicationController.updateApplication)
 router.delete('/:id', auth.userAuth, applicationController.deleteApplication)
 router.put('/:id/status', auth.ownerAuth, applicationController.updateApplicationStatus)
-
+router.get('/gig/:id', auth.ownerAuth, applicationController.getApplicants)
 
 module.exports = router

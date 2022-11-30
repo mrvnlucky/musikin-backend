@@ -68,7 +68,7 @@ exports.addApplication = async (req, res) => {
 
 exports.getAllApplications = async (req, res) => {
   try {
-    let gigs = await Application.findAll({
+    let applications = await Application.findAll({
       include: [{
         association: "user",
         attributes: ['user_photo', 'user_phone']
@@ -76,11 +76,11 @@ exports.getAllApplications = async (req, res) => {
     })
     res.status(200).send({
       success: true,
-      gigs
+      applications
     })
   } catch (err) {
     res.status(500).send({
-      message: err.message || "Some error occured while getting gigs"
+      message: err.message || "Some error occured while getting applications"
     })
   }
 }
@@ -164,6 +164,26 @@ exports.updateApplicationStatus = async (req, res) => {
   } catch (err) {
     res.status(500).send({
       message: err.message || "Some error occured while updating application status"
+    })
+  }
+}
+
+exports.getApplicants = async (req, res) => {
+  try {
+    let id = req.params.id
+    let applications = await Application.findAll({
+      include: [{
+        association: "user",
+        attributes: ['user_photo', 'user_phone']
+      }]
+    }, { where: { gig_id: id } })
+    res.status(200).send({
+      success: true,
+      applications
+    })
+  } catch (err) {
+    res.status(500).send({
+      message: err.message || "Some error occured while getting applicants"
     })
   }
 }
