@@ -240,7 +240,12 @@ exports.updateUserPassword = async (req, res) => {
 exports.getMyApplications = async (req, res) => {
   try {
     let id = req.params.id
-    let application = await Application.findAll({ where: { user_id: id } })
+    let application = await Application.findAll({
+      include: [{
+        association: "gig",
+        attributes: ['title', 'fee']
+      }]
+    }, { where: { user_id: id } })
     res.status(200).send({
       success: true,
       application
