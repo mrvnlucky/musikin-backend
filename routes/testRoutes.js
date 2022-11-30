@@ -10,5 +10,6 @@ router.get(
 router.get(
   "/owner", auth.ownerAuth, protectedController.testOwner
 );
+router.get("/", res.send("hello world"))
 
 module.exports = router;
