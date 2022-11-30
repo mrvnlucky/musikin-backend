@@ -26,7 +26,7 @@ app.use('/', router)
 const appStart = () => {
   try {
     app.listen(process.env.PORT, () => {
-      console.log('Server running at', process.env.SERVER_URL);
+      console.log('Server running at', process.env.PORT);
     })
   } catch (error) {
     console.log(`Error: ${error.message}`);
