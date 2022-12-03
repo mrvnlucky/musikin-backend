@@ -7,7 +7,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "nodemon index",
     "start": "node index.js",
-    "migrate": "npx sequelize-cli db:migrate"
+    "migrate": "npm config set scripts-prepend-node-path true && npx sequelize-cli db:migrate "
   },
   "repository": {
     "type": "git",
