@@ -25,7 +25,7 @@ module.exports = {
     host: process.env.DB_HOST || '127.0.0.1',
     dialect: 'postgres',
     dialectOptions: {
-      ssl: true
+      ssl: false
     }
   }
 }
