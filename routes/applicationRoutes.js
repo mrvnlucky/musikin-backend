@@ -12,4 +12,8 @@ router.delete('/:id', auth.userAuth, applicationController.deleteApplication)
 router.put('/:id/status', auth.ownerAuth, applicationController.updateApplicationStatus)
 router.get('/gig/:id', auth.ownerAuth, applicationController.getApplicants)
 
+router.get('/application', auth.adminAuth, applicationController.getAllApplications)
+router.get('/application/:id', auth.adminAuth, applicationController.getOneApplication)
+router.delete('/application/:id', auth.adminAuth, applicationController.deleteApplication)
+
 module.exports = router
