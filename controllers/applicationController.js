@@ -172,11 +172,22 @@ exports.getApplicants = async (req, res) => {
   try {
     let id = req.params.id
     let applications = await Application.findAll({
+      where: {
+        gig_id: id
+      }
+    }, {
       include: [{
         association: "user",
         attributes: ['user_photo', 'user_phone']
       }]
-    }, { where: { gig_id: id } })
+    })
+
+    // let applications = await Application.findAll({
+    //   include: [{
+    //     association: "user",
+    //     attributes: ['user_photo', 'user_phone']
+    //   }]
+    // }, { where: { gig_id: id } })
     res.status(200).send({
       success: true,
       applications
