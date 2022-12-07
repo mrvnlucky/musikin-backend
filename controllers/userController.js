@@ -244,8 +244,7 @@ exports.getMyApplications = async (req, res) => {
     let application = await Application.findAll({
       where: {
         user_id: id
-      }
-    }, {
+      },
       include: [
         {
           association: "gig",
