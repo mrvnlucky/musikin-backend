@@ -1,7 +1,6 @@
 const Admin = require('../models').Admin
 const jwt = require('jsonwebtoken')
 const bcrypt = require('bcryptjs')
-const cloudinary = require('../utils/cloudinary')
 
 
 const createToken = (id) => {
@@ -32,7 +31,8 @@ exports.loginAdmin = async (req, res) => {
       return
     }
 
-    const match = await bcrypt.compare(password, admin.admin_password)
+    const match = await bcrypt.compare(password, admin.password)
+
     if (!match) {
       res.status(401).send("Incorrect password!")
       return
@@ -108,7 +108,7 @@ exports.getAllAdmins = async (req, res) => {
     const admins = await Admin.findAndCountAll({
       limit: limit,
       offset: offset,
-      attributes: ['id', 'userName']
+      attributes: ['id', 'userName', 'password']
     })
     res.status(200).send({
       success: true,
