@@ -248,7 +248,7 @@ exports.getMyApplications = async (req, res) => {
       include: [
         {
           association: "gig",
-          attributes: ['title', 'fee']
+          attributes: ['title', 'fee', 'location']
         }
       ]
     })
