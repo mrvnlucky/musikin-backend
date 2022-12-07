@@ -149,7 +149,7 @@ exports.getOneUser = async (req, res) => {
 
 exports.updateUser = async (req, res) => {
   try {
-    const { user_name, user_email, user_phone } = req.body
+    const { user_name, user_email, user_phone, user_description } = req.body
     let id = req.params.id
 
     if (req.file) {
@@ -161,6 +161,7 @@ exports.updateUser = async (req, res) => {
         user_name: user_name,
         user_email: user_email,
         user_phone: user_phone,
+        user_description: user_description,
         user_photo: img.secure_url
       }, {
         where: {
@@ -171,7 +172,8 @@ exports.updateUser = async (req, res) => {
       const user = await User.update({
         user_name: user_name,
         user_email: user_email,
-        user_phone: user_phone
+        user_phone: user_phone,
+        user_description: user_description
       }, {
         where: {
           id: id
