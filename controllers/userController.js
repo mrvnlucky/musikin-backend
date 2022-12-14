@@ -47,6 +47,7 @@ exports.loginUser = async (req, res) => {
       name: user.user_name,
       phone: user.user_phone,
       photo: user.user_photo,
+      description: user.user_description,
       token: token
     }
     res.status(200).send({
@@ -92,6 +93,7 @@ exports.signupUser = async (req, res) => {
       name: user.user_name,
       phone: user.user_phone,
       photo: user.user_photo,
+      description: user.user_description,
       token: token
     }
     res.status(200).send({

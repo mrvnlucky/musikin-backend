@@ -120,7 +120,7 @@ exports.getAllOwners = async (req, res) => {
     const owners = await Owner.findAndCountAll({
       limit: limit,
       offset: offset,
-      attributes: ['id', 'owner_email', 'owner_phone', 'owner_photo', 'createdAt', 'updatedAt']
+      attributes: ['id', 'owner_email', 'owner_name', 'owner_phone', 'owner_photo', 'createdAt', 'updatedAt']
     })
     res.status(200).send({
       success: true,

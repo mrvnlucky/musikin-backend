@@ -24,9 +24,6 @@ module.exports = {
       user_photo: {
         type: Sequelize.STRING
       },
-      user_description: {
-        type: Sequelize.STRING
-      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE
