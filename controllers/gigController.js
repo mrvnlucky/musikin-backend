@@ -73,7 +73,12 @@ exports.addGig = async (req, res) => {
 
 exports.getAllGigs = async (req, res) => {
   try {
-    let gigs = await Gig.findAll()
+    let gigs = await Gig.findAll({
+      include: [{
+        association: "owner",
+        attributes: ['owner_name']
+      }]
+    })
     res.status(200).send({
       success: true,
       gigs
@@ -88,7 +93,14 @@ exports.getAllGigs = async (req, res) => {
 exports.getOneGig = async (req, res) => {
   try {
     let id = req.params.id
-    let gig = await Gig.findOne({ where: { id: id } })
+    let gig = await Gig.findOne({
+      where: { id: id },
+      include: [{
+        association: 'owner',
+        attributes: ['owner_name']
+      }]
+
+    })
     res.status(200).send({
       success: true,
       gig
