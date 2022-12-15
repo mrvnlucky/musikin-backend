@@ -109,24 +109,24 @@ exports.signupUser = async (req, res) => {
 
 exports.getAllUsers = async (req, res) => {
   try {
-    // let users = await User.findAll()
-    // res.status(200).send({
-    //   success: true, users
-    // })
-
-    const limit = req.query.size || 10
-    const offset = req.query.page || 0
-
-    const users = await User.findAndCountAll({
-      limit: limit,
-      offset: offset,
-      attributes: ['id', 'user_email', 'user_name', 'user_phone', 'user_photo', 'createdAt', 'updatedAt']
-    })
+    const users = await User.findAll()
     res.status(200).send({
-      success: true,
-      users,
-      totalPages: Math.ceil(users.count / Number.parseInt(limit))
+      success: true, users
     })
+
+    // const limit = req.query.size || 10
+    // const offset = req.query.page || 0
+
+    // const users = await User.findAndCountAll({
+    //   limit: limit,
+    //   offset: offset,
+    //   attributes: ['id', 'user_email', 'user_name', 'user_phone', 'user_photo', 'createdAt', 'updatedAt']
+    // })
+    // res.status(200).send({
+    //   success: true,
+    //   users,
+    //   totalPages: Math.ceil(users.count / Number.parseInt(limit))
+    // })
   } catch (err) {
     res.status(500).send({
       message: err.messagee || "Some error occured while geeting users"
