@@ -122,11 +122,11 @@ exports.getAllOwners = async (req, res) => {
     //   offset: offset,
     //   attributes: ['id', 'owner_email', 'owner_name', 'owner_phone', 'owner_photo', 'createdAt', 'updatedAt']
     // })
-    res.status(200).send({
-      success: true,
-      owners,
-      totalPages: Math.ceil(owners.count / Number.parseInt(limit))
-    })
+    // res.status(200).send({
+    //   success: true,
+    //   owners,
+    //   totalPages: Math.ceil(owners.count / Number.parseInt(limit))
+    // })
   } catch (err) {
     res.status(500).send({
       message: err.messagee || "Some error occured while geeting owners"
